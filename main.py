@@ -5,6 +5,7 @@ from uic.map import Ui_Form
 
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton
 from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import Qt
 
 
 class Example(QWidget, Ui_Form):
@@ -13,6 +14,15 @@ class Example(QWidget, Ui_Form):
         self.setupUi(self)
         self.searchButton.clicked.connect(self.run)
         self.label_error.hide()
+        self.spn_el = 0.001
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key_PageDown:
+            if self.spn_el > 0.001:
+                self.spn_el -= 0.05
+        if event.key() == Qt.Key_PageUp:
+            if self.spn_el < 5:
+                self.spn_el += 0.05
 
     def run(self):
         try:
@@ -20,7 +30,7 @@ class Example(QWidget, Ui_Form):
             coords1 = self.coords1_input_lineEdit.text()
             coords2 = self.coords2_input_lineEdit.text()
             map_request = f'http://static-maps.yandex.ru/1.x/?ll={coords2},{coords1}' \
-                          f'&l=map&z=15&size=650,450'
+                          f'&l=map&z=15&size=650,450&spn={self.spn_el},{self.spn_el}'
             response = requests.get(map_request)
             if response and response.status_code == 200:
                 mp = 'map.png'
