@@ -17,39 +17,45 @@ class Example(QWidget, Ui_Form):
         self.spn_el = 0.001
 
     def keyPressEvent(self, event):
-            if event.key() == Qt.Key_PageDown:
-                if self.spn_el > 0.05:
-                    self.spn_el -= 0.05
-            elif event.key() == Qt.Key_PageUp:
-                if self.spn_el < 20:
-                    self.spn_el += 0.05
+        if event.key() == Qt.Key_PageDown:
+            if self.spn_el > 0.05:
+                self.spn_el -= 0.05
+        elif event.key() == Qt.Key_PageUp:
+            if self.spn_el < 20:
+                self.spn_el += 0.05
+        elif event.key() == Qt.Key_D:
+            self.coords2 = str(float(self.coords2) + 1)
+        elif event.key() == Qt.Key_W:
+            self.coords1 = str(float(self.coords1) + 1)
+        elif event.key() == Qt.Key_A:
+            self.coords2 = str(float(self.coords2) - 1)
+        elif event.key() == Qt.Key_S:
+            self.coords1 = str(float(self.coords1) - 1)
+        else:
+            self.label_error.hide()
+        try:
+            map_request = f'http://static-maps.yandex.ru/1.x/?ll={self.coords2},{self.coords1}' \
+                          f'&l=map&z=15&size=650,450&spn={self.spn_el},{self.spn_el}'
+            response = requests.get(map_request)
+            if response and response.status_code == 200:
+                mp = 'map.png'
+                with open(mp, 'wb') as file:
+                    file.write(response.content)
+                self.px = QPixmap('map.png')
+                self.map_label.setPixmap(self.px)
+                os.remove(mp)
+                self.map_label.show()
             else:
-                self.label_error.hide()
-            try:
-                coords1 = self.coords1_input_lineEdit.text()
-                coords2 = self.coords2_input_lineEdit.text()
-                map_request = f'http://static-maps.yandex.ru/1.x/?ll={coords2},{coords1}' \
-                              f'&l=map&z=15&size=650,450&spn={self.spn_el},{self.spn_el}'
-                response = requests.get(map_request)
-                if response and response.status_code == 200:
-                    mp = 'map.png'
-                    with open(mp, 'wb') as file:
-                        file.write(response.content)
-                    self.px = QPixmap('map.png')
-                    self.map_label.setPixmap(self.px)
-                    os.remove(mp)
-                    self.map_label.show()
-                else:
-                    self.label_error.show()
-                    self.map_label.hide()
-            except Exception:
                 self.label_error.show()
+                self.map_label.hide()
+        except Exception:
+            self.label_error.show()
 
     def run(self):
         try:
-            coords1 = self.coords1_input_lineEdit.text()
-            coords2 = self.coords2_input_lineEdit.text()
-            map_request = f'http://static-maps.yandex.ru/1.x/?ll={coords2},{coords1}' \
+            self.coords1 = self.coords1_input_lineEdit.text()
+            self.coords2 = self.coords2_input_lineEdit.text()
+            map_request = f'http://static-maps.yandex.ru/1.x/?ll={self.coords2},{self.coords1}' \
                           f'&l=map&z=15&size=650,450&spn={self.spn_el},{self.spn_el}'
             response = requests.get(map_request)
             if response and response.status_code == 200:
