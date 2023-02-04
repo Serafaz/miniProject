@@ -207,6 +207,54 @@
     <string>Неверный ввод!</string>
    </property>
   </widget>
+  <widget class="QComboBox" name="layer_comboBox">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>140</y>
+     <width>121</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <item>
+    <property name="text">
+     <string>Схема</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Спутник</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Гибрид</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>140</y>
+     <width>51</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Вид:</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

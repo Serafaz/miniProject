@@ -19,8 +19,18 @@ class Example(QWidget, Ui_Form):
             self.label_error.hide()
             coords1 = self.coords1_input_lineEdit.text()
             coords2 = self.coords2_input_lineEdit.text()
+            print(1)
+            layer = self.layer_comboBox.currentText()
+
+            if layer == 'Схема':
+                layer = 'map'
+            elif layer == 'Спутник':
+                layer = 'sat'
+            else:
+                layer = 'sat,skl'
             map_request = f'http://static-maps.yandex.ru/1.x/?ll={coords2},{coords1}' \
-                          f'&l=map&z=15&size=650,450'
+                          f'&l={layer}&z=15&size=650,450'
+            print(map_request)
             response = requests.get(map_request)
             if response and response.status_code == 200:
                 mp = 'map.png'
